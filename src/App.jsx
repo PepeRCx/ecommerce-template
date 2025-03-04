@@ -2,7 +2,6 @@ import ProductCard from "./components/ProductCard/ProductCard.jsx";
 import HomeBanner from "./components/HomeBanner/HomeBanner.jsx"
 import TopBar from "./components/TopBar/TopBar.jsx";
 import NikeShoe from "./assets/nike-joyride.jpg";
-import { MuiDrawer } from "./components/MuiDrawer.jsx";
 
 function App() {
   return (
