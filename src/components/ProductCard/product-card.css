@@ -27,12 +27,10 @@
     color: black;
 
     & .item-title {
-        margin-left: 5px;
         max-width: 70%;
     }
 
     & .item-price {
-        margin-right: 5px;
         font-weight: 700;
     }
 }
