@@ -1,0 +1,34 @@
+.login-card {
+    width: 550px;
+    height: 750px;
+    border-radius: 15px;
+    justify-self: center;
+    text-align: center;
+    color: black;
+
+    & h2 {
+        padding-top: 3vh;
+        font-size: 2rem;
+        font-weight: 400;
+    }
+
+    & .user-data {
+        padding: 3vh;
+
+        & .buttons {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .login-card {
+        width: 80%;
+        max-width: 600px;
+        height: 90%;
+        max-height: 750px;
+        margin-top: 5%;
+        align-self: center;
+    }
+}
