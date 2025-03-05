@@ -10,6 +10,16 @@ const Signup = () => {
     const [confirmPassword, confirmSetPassword] = useState('');
     const navigate = useNavigate();
 
+    const saveUserEmail = async () => {
+        const { error } = await supabase
+            .from('users_data')
+            .insert({ email: email });
+        if (error) {
+            console.log('Error saving user email:', error.message)
+        }
+
+    }
+
     const handleSignup = async () => {
         if (password !== confirmPassword) {
             alert("La contraseña no coincide")
@@ -19,10 +29,12 @@ const Signup = () => {
             if (error) {
                 alert('Error logging in:', error.message);
             } else {
+                saveUserEmail();
                 navigate('/');
             }
         }
     };
+
 
     const goToLogin = () => {
         navigate('/login')
