@@ -22,8 +22,11 @@ const Signup = () => {
                 navigate('/');
             }
         }
-        
     };
+
+    const goToLogin = () => {
+        navigate('/login')
+    }
 
     return (
         <div className='login-card'>
@@ -68,7 +71,8 @@ const Signup = () => {
                         variant='outlined' 
                         color='black' 
                         sx={{mt: 1}} 
-                        size='small' 
+                        size='small'
+                        onClick={goToLogin}
                     >Iniciar Sesión
                     </Button>
                 </div>
