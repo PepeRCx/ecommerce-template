@@ -1,0 +1,6 @@
+.panel {
+    justify-self: center;
+    width: 800px;
+    height: 800px;
+    border-radius: 15px;
+}

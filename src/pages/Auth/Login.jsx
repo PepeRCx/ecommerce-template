@@ -17,24 +17,28 @@ const Login = () => {
 
         if (error) {
             console.error('Error logging in:', error.message);
-        } else {
+        } else {    
             console.log('User logged in:', data);
             navigate('/');
         }
     };
+
+    const goToSignup = () => {
+        navigate('/signup')
+    }
 
     return (
         <div className='login-card'>
             <h2>Inicio de Sesión</h2>
             <section className='user-data'>
                 <TextField 
-                required 
-                fullWidth 
-                label="Correo Electrónico" 
-                id="fullWidth" 
-                color='black' 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}/>
+                    required 
+                    fullWidth 
+                    label="Correo Electrónico" 
+                    id="fullWidth" 
+                    color='black' 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}/>
                 <TextField 
                     required 
                     fullWidth 
@@ -58,7 +62,8 @@ const Login = () => {
                         variant='outlined' 
                         color='black' 
                         sx={{mt: 1}} 
-                        size='small' 
+                        size='small'
+                        onClick={goToSignup}
                     >Registrarse
                     </Button>
                     <p>__</p>
