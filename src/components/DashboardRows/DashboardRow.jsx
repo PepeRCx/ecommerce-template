@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import './dashboard-row.css'
+import supabase from '../../lib/helper/supabaseClient'
 
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -15,6 +16,21 @@ function DashboardRow({userEmail, userRole}) {
     const handleChange = (event) => {
         setRole(event.target.value);
     };
+
+    const updateUserRole = async () => {
+        const newRole = role === "Administrador" ? true : false;
+
+        const { error } = await supabase
+            .from('users_data')
+            .update({ is_admin: newRole })
+            .eq('email', userEmail)
+
+        if (error) {
+            alert(error)
+        } else {
+            alert("Rol actualizado")
+        }
+    }
 
     return (
         <div className="row">
@@ -51,7 +67,7 @@ function DashboardRow({userEmail, userRole}) {
                 </Box>
             </div>
             <div className="trd-container">
-                <IconButton>
+                <IconButton onClick={updateUserRole}>
                     <CloudUploadRounded/>
                 </IconButton>
             </div>

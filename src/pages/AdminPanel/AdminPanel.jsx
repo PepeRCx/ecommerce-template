@@ -25,7 +25,6 @@ function AdminPanel() {
             <h2>Admin Panel</h2>
             <div className="panel">
                 <Button variant="contained" onClick={fetchUsers}>Fetch Users</Button>
-                <Button variant="contained">Save</Button>
                 {users.map((user, index) =>(
                     <DashboardRow key={index} userEmail={user.email} userRole={user.is_admin}/>
                 ))}
