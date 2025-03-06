@@ -2,18 +2,15 @@ import React from "react";
 import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Paper, createTheme, ThemeProvider } from "@mui/material";
 import { BarChartRounded, PeopleAltRounded, SellRounded } from "@mui/icons-material";
 
-function MuiBottomNav() {
+function MuiBottomNav({ onChange }) {
     const [value, setValue] = React.useState(0);
 
-    // Define a dark theme for the BottomNavigation component
     const darkTheme = createTheme({
         palette: {
-            mode: 'dark', // Set the theme mode to dark
+            mode: 'dark',
         },
     });
 
@@ -26,6 +23,7 @@ function MuiBottomNav() {
                         value={value}
                         onChange={(event, newValue) => {
                             setValue(newValue);
+                            onChange(newValue);
                         }}
                     >
                         <BottomNavigationAction label="Dashboard" icon={<BarChartRounded />} />
