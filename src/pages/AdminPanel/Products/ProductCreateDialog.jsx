@@ -1,7 +1,8 @@
-import * as React from 'react';
+import React, { useState, useRef } from 'react';
+import supabase from '../../../lib/helper/supabaseClient'
+
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
@@ -14,13 +15,24 @@ import Slide from '@mui/material/Slide';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Tooltip from '@mui/material/Tooltip';
+import TextField from '@mui/material/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormControl from '@mui/material/FormControl';
+import { OutlinedInput } from '@mui/material';
+import { CloudUpload, Message } from '@mui/icons-material';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function ProductCreateDialog() {
-  const [open, setOpen] = React.useState(false);
+export default function ProductCreateDialog({ user }) {
+  const skuRef = useRef(null);
+  const nameRef = useRef(null);
+  const priceRef = useRef(null);
+  const stockRef = useRef(null);
+
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -29,6 +41,31 @@ export default function ProductCreateDialog() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const createItem = async () => {
+    const sku = skuRef.current.value;
+    const name = nameRef.current.value;
+    const price = parseFloat(priceRef.current.value);
+    const stock = parseInt(stockRef.current.value);
+    const createdBy = user
+
+    if (isNaN(price) || isNaN(stock)) {
+      alert("Error: Precio o Stock no válidos");
+      return;
+    }
+
+    const { error } = await supabase
+      .from('simple_products')
+      .insert({ item_sku: sku, item_name: name, item_price: price, item_stock: stock, created_by: createdBy });
+
+    if (error) {
+      alert("Ocurrió un error: " + Message.error);
+    } else {
+      alert("Producto creado correctamente");
+    }
+
+    handleClose();
+  }
 
   return (
     <React.Fragment>
@@ -43,7 +80,7 @@ export default function ProductCreateDialog() {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar sx={{ position: 'relative' }}>
+        <AppBar sx={{ position: 'relative', backgroundColor: 'black' }}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -54,23 +91,39 @@ export default function ProductCreateDialog() {
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
+              Nuevo Producto
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              save
+            <Button variant='outlined' autoFocus color="inherit" onClick={createItem} startIcon={<CloudUpload/>}>
+              Guardar
             </Button>
           </Toolbar>
         </AppBar>
         <List>
           <ListItemButton>
-            <ListItemText primary="Phone ringtone" secondary="Titania" />
+            <TextField fullWidth label="SKU" id="sku-input" color='black' inputRef={skuRef}/>
           </ListItemButton>
-          <Divider />
           <ListItemButton>
-            <ListItemText
-              primary="Default notification ringtone"
-              secondary="Tethys"
-            />
+            <TextField fullWidth label="Nombre del producto" id="product-name-input" color='black' inputRef={nameRef}/>
+          </ListItemButton>
+          <ListItemButton>
+            <FormControl fullWidth sx={{ mr: 1 }}>
+              <InputLabel htmlFor="filled-adornment-amount">Precio</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-amount"
+                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                label="Precio"
+                inputRef={priceRef}
+              />
+            </FormControl>
+            <FormControl fullWidth sx={{ ml: 1 }}>
+              <InputLabel htmlFor="outlined-adornment-stock">Stock</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-stock"
+                startAdornment={<InputAdornment position="start"></InputAdornment>}
+                label="Stock"
+                inputRef={stockRef}
+              />
+            </FormControl>
           </ListItemButton>
         </List>
       </Dialog>
