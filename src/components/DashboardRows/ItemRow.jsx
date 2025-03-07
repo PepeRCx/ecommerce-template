@@ -24,7 +24,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 
-function DashboardRow() {
+function ItemRow({ sku, name, price, stock }) {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -38,21 +38,21 @@ function DashboardRow() {
     return (
         <div className="row">
             <TextField 
-                id="outlined-read-only-input" hiddenLabel defaultValue='Nombre del producto' slotProps={{
+                id="outlined-read-only-input" hiddenLabel defaultValue={name} slotProps={{
                     input: {
                     readOnly: true,
                     },
                 }} variant="filled" size="small" fullWidth sx={{ '& .MuiFilledInput-root': {borderRadius: 0} }}
             />
             <TextField 
-                id="outlined-read-only-input" hiddenLabel defaultValue='Precio' slotProps={{
+                id="outlined-read-only-input" hiddenLabel defaultValue={price} slotProps={{
                     input: {
                     readOnly: true,
                     },
                 }} variant="filled" size="small" fullWidth sx={{ '& .MuiFilledInput-root': {borderRadius: 0} }}
             />
             <TextField 
-                id="outlined-read-only-input" hiddenLabel defaultValue='Stock' slotProps={{
+                id="outlined-read-only-input" hiddenLabel defaultValue={stock} slotProps={{
                     input: {
                     readOnly: true,
                     },
@@ -118,4 +118,4 @@ function DashboardRow() {
     )
 }
 
-export default DashboardRow
+export default ItemRow

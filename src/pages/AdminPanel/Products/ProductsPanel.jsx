@@ -1,18 +1,36 @@
-import React, { useEffect } from "react";
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
-import Tooltip from '@mui/material/Tooltip';
+import React, { useEffect, useState } from "react";
+import supabase from "../../../lib/helper/supabaseClient";
 
-import ImageUpload from "../../../components/ImageUpload/ImageUpload";
 import ItemRow from '../../../components/DashboardRows/ItemRow';
 import ProductCreateDialog from './ProductCreateDialog';
 
 
 function ProductsPanel({ userEmail }) {
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    const fetchProducts = async () => {
+        const { data, error } = await supabase
+            .from('simple_products')
+            .select('item_name, item_price, item_stock')
+        
+        if (error) {
+            console.log(error)
+        } else {
+            setProducts(data)
+            console.log(data)
+        }
+    }
+
     return (
         <>
             <p style={{ color: 'black' }}>Products Panel</p>
-            <ItemRow />
+            {products.map((product, index) =>(
+                <ItemRow key={index} name={product.item_name} price={product.item_price} stock={product.item_stock} />
+            ))}
             <ProductCreateDialog user={userEmail}/>
         </>
     )
