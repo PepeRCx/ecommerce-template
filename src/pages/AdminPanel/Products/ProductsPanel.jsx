@@ -15,7 +15,7 @@ function ProductsPanel({ userEmail }) {
     const fetchProducts = async () => {
         const { data, error } = await supabase
             .from('simple_products')
-            .select('item_name, item_price, item_stock')
+            .select('item_sku, item_name, item_price, item_stock')
         
         if (error) {
             console.log(error)
@@ -29,7 +29,7 @@ function ProductsPanel({ userEmail }) {
         <>
             <p style={{ color: 'black' }}>Products Panel</p>
             {products.map((product, index) =>(
-                <ItemRow key={index} name={product.item_name} price={product.item_price} stock={product.item_stock} />
+                <ItemRow key={index} sku={product.item_sku} name={product.item_name} price={product.item_price} stock={product.item_stock} />
             ))}
             <ProductCreateDialog user={userEmail}/>
         </>

@@ -88,11 +88,11 @@ function ItemRow({ sku, name, price, stock }) {
                     </AppBar>
                     <List>
                         <ListItemButton>
-                            <TextField fullWidth label="SKU" id="sku-input" color='black' />
+                            <TextField fullWidth label="SKU" id="sku-input" color='black' defaultValue={sku} />
                         </ListItemButton>
                         <Divider />
                         <ListItemButton>
-                            <TextField fullWidth label="Nombre del producto" id="product-name-input" color='black' />
+                            <TextField fullWidth label="Nombre del producto" id="product-name-input" color='black' defaultValue={name} />
                         </ListItemButton>
                         <ListItemButton>
                             <FormControl fullWidth sx={{ mr: 1 }} >
@@ -101,6 +101,7 @@ function ItemRow({ sku, name, price, stock }) {
                                     id="outlined-adornment-amount"
                                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                     label="Precio"
+                                    defaultValue={price}
                                 />
                             </FormControl>
                             <FormControl fullWidth sx={{ ml: 1 }} >
@@ -108,6 +109,7 @@ function ItemRow({ sku, name, price, stock }) {
                                 <OutlinedInput
                                     id="outlined-adornment-stock"
                                     label="Stock"
+                                    defaultValue={stock}
                                 />
                             </FormControl>
                         </ListItemButton>
