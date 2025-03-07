@@ -95,21 +95,20 @@ function DashboardRow() {
                             <TextField fullWidth label="Nombre del producto" id="product-name-input" color='black' />
                         </ListItemButton>
                         <ListItemButton>
-                            <FormControl fullWidth sx={{ mr: 1 }}>
-                            <InputLabel htmlFor="filled-adornment-amount">Precio</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-amount"
-                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                label="Precio"
-                            />
+                            <FormControl fullWidth sx={{ mr: 1 }} >
+                                <InputLabel htmlFor="filled-adornment-amount">Precio</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-amount"
+                                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                    label="Precio"
+                                />
                             </FormControl>
-                            <FormControl fullWidth sx={{ ml: 1 }}>
-                            <InputLabel htmlFor="outlined-adornment-stock">Stock</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-stock"
-                                startAdornment={<InputAdornment position="start"></InputAdornment>}
-                                label="Stock"
-                            />
+                            <FormControl fullWidth sx={{ ml: 1 }} >
+                                <InputLabel htmlFor="outlined-adornment-stock">Stock</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-stock"
+                                    label="Stock"
+                                />
                             </FormControl>
                         </ListItemButton>
                     </List>
