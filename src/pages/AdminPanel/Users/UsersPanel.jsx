@@ -7,31 +7,6 @@ import { Button } from "@mui/material";
 
 function UsersPanel() {
     const [users, setUsers] = useState([]);
-    const [isAdmin, setIsAdmin] = useState(null);
-    const navigate = useNavigate();
-
-    useEffect(()=> {
-        const checkIfAdmin = async () => {
-            const { data: { user }, error } = await supabase.auth.getUser();
-            if (error || !user) {
-                navigate('/');
-                return;
-            }
-
-            const { data, error: userError } = await supabase
-                .from("users_data")
-                .select("is_admin")
-                .eq("email", user.email)
-                .single();
-            if (userError || !data || !data.is_admin) {
-                navigate('/');
-            } else {
-                setIsAdmin(true);
-            }
-        };
-
-        checkIfAdmin();
-    }, [navigate]);
 
     const fetchUsers = async () => {
         const { data, error } = await supabase
@@ -55,7 +30,7 @@ function UsersPanel() {
         }
     }
 
-    return isAdmin ? (
+    return (
         <>
             <div className="panel">
                 <Button variant="contained" onClick={fetchUsers} sx={{ m: 2, backgroundColor: 'black' }}>Fetch Users</Button>
@@ -65,7 +40,7 @@ function UsersPanel() {
                 ))}
             </div>
         </>
-    ) : null;
+    )
 }
 
 export default UsersPanel;
