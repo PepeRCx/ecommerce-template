@@ -19,8 +19,9 @@ import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-import { OutlinedInput } from '@mui/material';
+import { ListItem, OutlinedInput } from '@mui/material';
 import { CloudUpload, Message } from '@mui/icons-material';
+import ImageUpload from '../../../components/ImageUpload/ImageUpload';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -33,6 +34,12 @@ export default function ProductCreateDialog({ user }) {
   const stockRef = useRef(null);
 
   const [open, setOpen] = useState(false);
+  
+  const [uploadSignal, setUploadSignal] = useState(false);
+
+  const handleSaveButtonClick = () => {
+    setUploadSignal((prev) => !prev);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -64,6 +71,7 @@ export default function ProductCreateDialog({ user }) {
       alert("Producto creado correctamente");
     }
 
+    handleSaveButtonClick();
     handleClose();
   }
 
@@ -99,13 +107,13 @@ export default function ProductCreateDialog({ user }) {
           </Toolbar>
         </AppBar>
         <List>
-          <ListItemButton>
+          <ListItem>
             <TextField fullWidth label="SKU" id="sku-input" color='black' inputRef={skuRef}/>
-          </ListItemButton>
-          <ListItemButton>
+          </ListItem>
+          <ListItem>
             <TextField fullWidth label="Nombre del producto" id="product-name-input" color='black' inputRef={nameRef}/>
-          </ListItemButton>
-          <ListItemButton>
+          </ListItem>
+          <ListItem>
             <FormControl fullWidth sx={{ mr: 1 }}>
               <InputLabel htmlFor="filled-adornment-amount">Precio</InputLabel>
               <OutlinedInput
@@ -124,7 +132,10 @@ export default function ProductCreateDialog({ user }) {
                 inputRef={stockRef}
               />
             </FormControl>
-          </ListItemButton>
+          </ListItem>
+          <ListItem sx={{ justifyContent: 'center'}} >
+            <ImageUpload uploadPressed={uploadSignal}/>
+          </ListItem>
         </List>
       </Dialog>
     </React.Fragment>
