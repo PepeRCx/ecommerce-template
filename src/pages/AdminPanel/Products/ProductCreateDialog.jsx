@@ -34,11 +34,15 @@ export default function ProductCreateDialog({ user }) {
   const stockRef = useRef(null);
 
   const [open, setOpen] = useState(false);
-  
+  const [skuForImages, setSkuForImages] = useState('')
   const [uploadSignal, setUploadSignal] = useState(false);
 
   const handleSaveButtonClick = () => {
     setUploadSignal((prev) => !prev);
+
+    if (skuRef.current) {
+      setSkuForImages(skuRef.current.value);
+    }
   };
 
   const handleClickOpen = () => {
@@ -134,7 +138,7 @@ export default function ProductCreateDialog({ user }) {
             </FormControl>
           </ListItem>
           <ListItem sx={{ justifyContent: 'center'}} >
-            <ImageUpload uploadPressed={uploadSignal}/>
+            <ImageUpload uploadPressed={uploadSignal} skuForImages={skuForImages} />
           </ListItem>
         </List>
       </Dialog>

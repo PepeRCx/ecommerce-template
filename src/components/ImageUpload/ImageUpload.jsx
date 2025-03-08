@@ -3,7 +3,7 @@ import './image-upload.css'
 import { CloudUploadRounded } from "@mui/icons-material";
 import supabase from "../../lib/helper/supabaseClient";
 
-function ImageUpload({ uploadPressed }) {
+function ImageUpload({ uploadPressed, skuForImages }) {
     const [images, setImages] = useState(Array(5).fill(null));
     const fileInputs = useRef([]);
 
@@ -50,7 +50,8 @@ function ImageUpload({ uploadPressed }) {
             return;
         }
 
-        for (let file of uploadedFiles) {
+        for (let i = 0; i < uploadedFiles.length; i++) {
+            const file = uploadedFiles[i];
             const fileName = `${Date.now()}_${file.name}`;
 
             const { data, error } = await supabase
@@ -64,12 +65,29 @@ function ImageUpload({ uploadPressed }) {
             if (error) {
                 alert('Error uploading image: ' + error.message);
                 continue;
+            } else {
+                await uploadFileName(fileName, i + 1);
             }
         }
-
-        alert('Images uploaded successfully');
-
     };
+
+    const uploadFileName = async (fileName, index) => {
+        if (index < 1 || index > 5) return;
+
+        const columnName = `image_${index}_name`;
+        const updateData = { [columnName]: fileName };
+
+        const { error } = await supabase
+            .from('simple_products')
+            .update(updateData)
+            .eq('item_sku', skuForImages);
+        
+        if (error) {
+            alert('Error updating product image: ' + error.message);
+        } else {
+            alert('aldo anda mal' + skuForImages)
+        }
+    }
 
   return (
     <div className="container">
