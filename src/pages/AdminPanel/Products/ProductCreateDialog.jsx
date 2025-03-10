@@ -21,7 +21,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import { ListItem, OutlinedInput } from '@mui/material';
 import { CloudUpload, Message } from '@mui/icons-material';
-import ImageUpload from '../../../components/ImageUpload/ImageUpload';
+import ImageUpload from '../../../components/ProductImages/ImageUpload';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
