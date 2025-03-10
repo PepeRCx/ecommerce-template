@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import TextField from '@mui/material/TextField';
-import { Button } from "@mui/material";
+import { Button, ListItem } from "@mui/material";
 import { CloudUploadRounded, EditNoteRounded } from "@mui/icons-material";
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
@@ -19,13 +19,25 @@ import { OutlinedInput } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { CloudUpload, Message } from '@mui/icons-material';
+import ImagesUpdate from "../ProductImages/ImagesUpdate";
+import supabase from "../../lib/helper/supabaseClient";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 
 function ItemRow({ sku, name, price, stock }) {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [initialImages, setInitialImages] = useState([]);
+
+    useEffect(() => {
+        const fetchImages = async () => {
+            const urls = await getImages();
+            setInitialImages(urls);
+        };
+
+        fetchImages();
+    }, []);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -33,6 +45,29 @@ function ItemRow({ sku, name, price, stock }) {
 
     const handleClose = () => {
         setOpen(false);
+    };
+    
+    const getImages = async () => {
+        const { data, error} = await supabase
+            .from('simple_products')
+            .select('image_1_name, image_2_name, image_3_name, image_4_name, image_5_name')
+            .eq('item_sku', sku)
+            .single()
+
+        if (error) {
+            alert('Error retrieving images names: ' + error.message)
+            return [];
+        }
+
+        const imagesUrl = [
+            data.image_1_name, data.image_2_name, data.image_3_name, data.image_4_name, data.image_5_name
+        ]
+            .filter(Boolean)
+            .map((imageName) =>
+                supabase.storage.from('ecommerce_gallery').getPublicUrl(`images/${imageName}`).data.publicUrl
+            );
+
+        return imagesUrl;
     };
 
     return (
@@ -87,14 +122,14 @@ function ItemRow({ sku, name, price, stock }) {
                         </Toolbar>
                     </AppBar>
                     <List>
-                        <ListItemButton>
+                        <ListItem>
                             <TextField fullWidth label="SKU" id="sku-input" color='black' defaultValue={sku} />
-                        </ListItemButton>
+                        </ListItem>
                         <Divider />
-                        <ListItemButton>
+                        <ListItem>
                             <TextField fullWidth label="Nombre del producto" id="product-name-input" color='black' defaultValue={name} />
-                        </ListItemButton>
-                        <ListItemButton>
+                        </ListItem>
+                        <ListItem>
                             <FormControl fullWidth sx={{ mr: 1 }} >
                                 <InputLabel htmlFor="filled-adornment-amount">Precio</InputLabel>
                                 <OutlinedInput
@@ -112,7 +147,10 @@ function ItemRow({ sku, name, price, stock }) {
                                     defaultValue={stock}
                                 />
                             </FormControl>
-                        </ListItemButton>
+                        </ListItem>
+                        <ListItem sx={{ justifyContent: 'center'}}>
+                            <ImagesUpdate imagesToLoad={initialImages}/>
+                        </ListItem>
                     </List>
                 </Dialog>
             </React.Fragment>

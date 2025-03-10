@@ -21,7 +21,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import { ListItem, OutlinedInput } from '@mui/material';
 import { CloudUpload, Message } from '@mui/icons-material';
-import ImageUpload from '../../../components/ImageUpload/ImageUpload';
+import ImageUpload from '../../../components/ProductImages/ImageUpload';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -34,11 +34,15 @@ export default function ProductCreateDialog({ user }) {
   const stockRef = useRef(null);
 
   const [open, setOpen] = useState(false);
-  
+  const [skuForImages, setSkuForImages] = useState('')
   const [uploadSignal, setUploadSignal] = useState(false);
 
   const handleSaveButtonClick = () => {
     setUploadSignal((prev) => !prev);
+
+    if (skuRef.current) {
+      setSkuForImages(skuRef.current.value);
+    }
   };
 
   const handleClickOpen = () => {
@@ -134,7 +138,7 @@ export default function ProductCreateDialog({ user }) {
             </FormControl>
           </ListItem>
           <ListItem sx={{ justifyContent: 'center'}} >
-            <ImageUpload uploadPressed={uploadSignal}/>
+            <ImageUpload uploadPressed={uploadSignal} skuForImages={skuForImages} />
           </ListItem>
         </List>
       </Dialog>
